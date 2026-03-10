@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>React 多示例合并</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: sans-serif; margin: 20px; padding: 0; }
+    h1 { margin-top: 0; font-size: 22px; }
+    h2 { margin-top: 0; font-size: 20px; }
+    h3 { margin-top: 0; font-size: 18px; }
+    h4 { margin-top: 0; font-size: 16px; }
+    h5 { margin-top: 0; font-size: 14px; }
+    h6 { margin-top: 0; font-size: 12px; }
+    code { font-size: 1.2em; }
+    ul { padding-inline-start: 20px; }
+    .section { border: 1px solid #eee; border-radius: 8px; margin-bottom: 24px; padding: 16px; }
+    .section h2 { margin-bottom: 12px; }
+    .counter-btn { display: inline-block; margin: 10px; font-size: 20px; }
+    .counter-h1 { display: inline-block; margin: 10px; width: 30px; text-align: center; }
+    .mybutton-btn { display: block; margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+  <div class="section">
+    <h2>示例1：商品列表</h2>
+    <div id="root1"></div>
+  </div>
+  <div class="section">
+    <h2>示例2：独立计数器按钮</h2>
+    <div id="root2"></div>
+  </div>
+  <div class="section">
+    <h2>示例3：+3计数器</h2>
+    <div id="root3"></div>
+  </div>
+
+  <!-- React & Babel 依赖 -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script async src="https://ga.jspm.io/npm:es-module-shims@1.7.0/dist/es-module-shims.js"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react?dev",
+      "react-dom/client": "https://esm.sh/react-dom/client?dev"
+    }
+  }
+  </script>
+  <!----------------------->
+  <script type="text/babel" data-type="module">
+    import React, { StrictMode, useState } from 'react';
+    import { createRoot } from 'react-dom/client';
+
+    // 示例1：商品列表
+    const products = [
+      { title: 'Cabbage', isFruit: false, id: 1 },
+      { title: 'Garlic', isFruit: false, id: 2 },
+      { title: 'Apple', isFruit: true, id: 3 },
+    ];
+    function ShoppingList() {
+      const listItems = products.map(product =>
+        <li
+          key={product.id}
+          style={{ color: product.isFruit ? 'magenta' : 'darkgreen' }}
+        >
+          {product.title}
+        </li>
+      );
+      return <ul>{listItems}</ul>;
+    }
+
+    // 示例2：独立计数器按钮
+    function MyButton() {
+      const [count, setCount] = useState(0);
+      function handleClick() {
+        setCount(count + 1);
+      }
+      return (
+        <button className="mybutton-btn" onClick={handleClick}>
+          Clicked {count} times
+        </button>
+      );
+    }
+    function MyApp() {
+      return (
+        <div>
+          <h3>Counters that update separately</h3>
+          <MyButton />
+          <MyButton />
+        </div>
+      );
+    }
+
+    // 示例3：+3计数器
+    function Counter() {
+      const [number, setNumber] = useState(0);
+      return (
+        <>
+          <h1 className="counter-h1">{number}</h1>
+          <button className="counter-btn" onClick={() => {
+            setNumber(number + 1);
+            setNumber(number + 1);
+            setNumber(number + 1);
+          }}>+3</button>
+        </>
+      );
+    }
+
+    // 渲染到各自的 root
+    createRoot(document.getElementById('root1')).render(
+      <StrictMode>
+        <ShoppingList />
+      </StrictMode>
+    );
+    createRoot(document.getElementById('root2')).render(
+      <StrictMode>
+        <MyApp />
+      </StrictMode>
+    );
+    createRoot(document.getElementById('root3')).render(
+      <StrictMode>
+        <Counter />
+      </StrictMode>
+    );
+  </script>
+</body>
+</html>

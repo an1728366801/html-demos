@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>项目目录首页</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 40px 30px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .menu-list li {
+            margin: 18px 0;
+            border-radius: 8px;
+            transition: background 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+        }
+        .menu-list li a {
+            display: flex;
+            align-items: center;
+            padding: 14px 22px;
+            text-decoration: none;
+            color: #222;
+            font-size: 1.18em;
+            background: #f3f6fa;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        .menu-list li a:hover {
+            background: #1976d2;
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(25,118,210,0.10);
+        }
+        .menu-list .icon {
+            font-size: 1.4em;
+            margin-right: 14px;
+            width: 1.6em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>项目目录首页</h1>
+        <ul class="menu-list">
+            <li><a href="dashboard"><span class="icon">📊</span> 大屏展示</a></li>
+            <li><a href="h5-mobile/canvas-poster"><span class="icon">📱</span> h5 canvas 海报</a></li>
+            <li><a href="html-javascript-demo/ToDoList"><span class="icon">📝</span> 原生html / ToDoList</a></li>
+            <li><a href="html-jquery-demo/CssAnimation"><span class="icon">💡</span> html-jquery-demo</a></li>
+            <li><a href="html-react-demo"><span class="icon">⚛️</span> html-react-demo / react-demo</a></li>
+            <li><a href="html-vue-demo"><span class="icon">🟩</span> html-vue-demo</a></li>
+            <li><a href="image-preview"><span class="icon">🖼️</span> image-preview</a></li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>ToDoList—按回车键提交</title>
+    <meta name="description" content="ToDoList无须注册即可使用，数据存储在用户浏览器的html5本地数据库里，是最简单最安全的待办事项列表应用！" />
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <header>
+        <section>
+            <form action="" id="form" onclick="">
+                <label for="title">ToDoList</label>
+                <input type="text" id="title" name="title" placeholder="添加ToDo" required="required"
+                    autocomplete="off" />
+            </form>
+        </section>
+    </header>
+    <section>
+        <h2>正在进行 <span id="todocount"></span></h2>
+        <ol id="todolist" class="demo-box">
+
+        </ol>
+        <h2>已经完成 <span id="donecount"></span></h2>
+        <ul id="donelist">
+        </ul>
+    </section>
+    <footer>
+        Copyright &copy; 2014 todolist.cn <a href="javascript:clear();">clear</a>
+    </footer>
+    <script type="text/javascript" src="index.js"></script>
+</body>
+
+</html>
+
+
+
+<script>
+    var title = document.querySelector('#title') //表单
+    var ol = document.querySelector('#todolist') //正在进行
+    var ul = document.querySelector('#donelist') //已完成
+    /*回车键存储数据*/
+    title.addEventListener('keydown', function (e) {
+        var arr = getData()
+        if (e.keyCode == 13) {
+            var todo = {
+                title: title.value,
+                done: false
+            }
+            arr.push(todo)
+            saveData(arr)
+            var form = document.querySelector('#form') //让表单返回默认值
+            form.reset()
+            load()
+        }
+    })
+
+    //获取数据
+    function getData() {
+        var data = window.localStorage.getItem('todo')
+        if (data != null) {
+            return JSON.parse(data)
+        } else {
+            return []
+        }
+    }
+
+    //存储数据
+    function saveData(tdlist) {
+        window.localStorage.setItem('todo', JSON.stringify(tdlist))
+    }
+
+    //加载数据
+    function load() {
+        var todoCount = document.querySelector('#todocount')
+        var doneCount = document.querySelector('#donecount')
+        var todocount = 0;
+        var donecount = 0;
+        /* 删除原来的子节点 */
+        var olchilds = ol.childNodes;
+        for (var i = olchilds.length - 1; i >= 0; i--) {
+            ol.removeChild(olchilds[i]);
+        }
+        var ulchilds = ul.childNodes;
+        for (var i = ulchilds.length - 1; i >= 0; i--) {
+            ul.removeChild(ulchilds[i]);
+        }
+        var data = getData()
+        data.forEach((item, index) => {
+            var li = document.createElement('li')
+            /* li.innerHTML = "<input type='checkbox'/><p id='p"+index+"'>"+item.title+"</p><a href='javascript:;'>-</a>"*/
+            li.innerHTML =
+                `<input type="checkbox" /><p id="p${index}">${item.title}</p><a href="javascript:;" id="${index}">-</a>`
+            if (item.done) {
+                ul.insertBefore(li, ul.children[0])
+                li.children[0].checked = 'checked'
+                donecount++
+            } else {
+                ol.insertBefore(li, ol.children[0])
+                todocount++
+            }
+        })
+        todoCount.innerText = todocount
+        doneCount.innerText = donecount
+    }
+    //编辑数据
+    function edit() {
+        ol.addEventListener('cilick', function (e) {
+            var p = e.target
+            if (p.nodeName == 'p') {
+                p.innerHTML = `<input type ='text' value ="${p.innerText}" id='input${p.id}'/>`
+                p.children[0].select()
+                p.children[0].addEventListener('blur', function () {
+                    var data = getData()
+                    var i = p.id.substring(1)
+                    data[i].title = this.value
+                    saveData(data)
+                    load()
+                })
+            }
+        })
+    }
+    edit()
+
+    //删除数据
+    function remove() {
+        ol.addEventListener('click', function (e) {
+            var a = e.target
+            if (a.nodeName == 'A') {
+                var i = a.id
+                var data = getData()
+                data.splice(i, 1)
+                saveData(data)
+                load()
+            }
+        })
+    }
+    remove()
+    //切换正在进行和完成
+    function change() {
+        ol.addEventListener('click', function (e) {
+            var input = e.target
+            if (input.nodeName == 'INPUT') {
+                var i = input.nextElementSibling.nextElementSibling.id
+                console.log(i);
+                var data = getData()
+                data[i].done = true
+                saveData(data)
+                load()
+
+            }
+        })
+        ul.addEventListener('click', function (e) {
+            var input = e.target
+            if (input.nodeName == 'INPUT') {
+                var i = input.nextElementSibling.nextElementSibling.id
+                console.log(i);
+                var data = getData()
+                data[i].done = false
+                saveData(data)
+                load()
+            }
+        })
+    }
+    change()
+
+</script>

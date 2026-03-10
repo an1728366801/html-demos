@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> js图片点击放大效果</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <header>js图片点击放大效果</header>
+    <div class="app">
+        <div class="box">
+            <a href="#">
+                <div class="imgBox">
+                    <img src="images/t1.png" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="box">
+            <a href="#">
+                <div class="imgBox">
+                    <img src="images/t2.png" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="box">
+            <a href="#">
+                <div class="imgBox">
+                    <img src="images/t3.png" alt="">
+                </div>
+            </a>
+        </div>
+
+    </div>
+    <div class="app">
+        <div class="box">
+            <a href="#">
+                <div class="imgBox">
+                    <img src="images/t1.png" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="box">
+            <a href="#">
+                <div class="imgBox">
+                    <img src="images/t2.png" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="box">
+            <a href="#">
+                <div class="imgBox">
+                    <img src="images/t3.png" alt="">
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- 图片预览 -->
+    <div>
+        <!-- 遮罩层-->
+        <div class="showToast-mask"></div>
+        <div class="showToast-content">
+            <div class="picBox">
+                <img src="images/t1.png" alt="" id="myImg">
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+
+    // 提示弹窗模版
+    $(function () {
+        var imgSrc = ''
+        //点击菜单
+        $('#showToast').click(function () {
+            $('.showToast-content').show()
+            $('.showToast-mask').show()
+
+        })
+
+        //取消按钮弹窗
+        $('.showToast-handleOk').click(function () {
+            $('.showToast-mask').hide()
+            $('.showToast-content').hide()
+        })
+
+        //点击遮罩层
+        $('.showToast-mask').not('.showToast-content').click(function () {
+            $('.showToast-mask').hide()
+            $('.showToast-content').hide()
+        })
+
+        //点击每一项的事件
+        $('.app .box .imgBox img').click(function () {
+            $('.showToast-content').show()
+            $('.showToast-mask').show()
+            imgSrc = $(this).attr('src')
+            var myImg = document.getElementById('myImg');
+            myImg.src = imgSrc;
+        })
+
+
+    })
+
+
+
+
+</script>
+
+</html>

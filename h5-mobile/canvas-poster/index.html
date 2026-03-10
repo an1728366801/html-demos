@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>微站H5</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+
+    <script src="public/flexible_css.js"></script>
+    <script src="public/flexible.js"></script>
+    <script src="public/html2canvas.min.js"></script>
+
+    <style>
+        html,body{
+            height: 100%;
+            width: 100%;    
+        }    
+        .create_playbill{
+            background: red;
+            font-size: .4533rem;
+            color:#fff;
+            width:4rem;
+            padding:.1067rem .2rem;
+            box-sizing: border-box;
+            border-radius: .1067rem;
+        }
+
+        .sshow_bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            z-index: 800;
+            opacity: 0.7;
+        }
+
+        .sshow_code {
+            width: 8.4rem;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform:translate(-50%,-50%);
+            z-index: 802;
+            /* background: #fff; */
+            border-radius: .2667rem;
+        }
+        .sshow_code_img {
+            width: 8.41rem;
+            height: 10.7333rem;
+            display: block;
+            border-radius: .2667rem .2667rem 0rem 0rem;
+        }
+        .sshow_code_content{
+            width: 8.4rem;
+            background: #fff;
+            padding:.6667rem .4rem;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            border-radius: 0rem 0rem .2667rem .2667rem ;
+        }
+        
+        .content_left_name{
+          display: flex; 
+          align-items: center;
+          height: .6667rem; 
+        }
+        .content_left_name_img{
+            width: .64rem;
+            height: .64rem;  
+            margin: .1333rem 0;
+        }
+        .content_left_name_title{
+            font-size: .48rem;
+            font-weight: 600; 
+            color:#000000;
+            margin-left:.2667rem;
+          
+        }
+        .content_left_department{
+            font-size: .3467rem;
+            margin-top:.1333rem;
+            color:#000000;
+        }
+        .content_left_num{
+            font-size: .32rem;
+            margin-top:.4rem;
+        }
+        .content_left_num1{
+            color:#666666
+        }
+        .content_left_num2{
+            color:#000000;
+            margin-left: .2667rem;
+        }
+        .content_right{     
+            text-align: center; 
+        }
+        .content_right_img {
+            width: 2.08rem;
+            height:2.1067rem;
+        }
+        .content_right_remark{
+            font-size: .24rem; 
+            color:#666666 ;
+            margin-top: .12rem;
+        }
+    </style>
+
+
+</head>
+<body>
+<div>弹出框生成canvas海报</div>
+<div class="create_playbill" id ='createPlaybill'>生成海报</div>
+<div class="mod_show" id="jsModShow">
+    <p class="sshow_bg" id="sshow_bg" ></p>
+    <div class="sshow_code" id="sshow_code">
+        <img src="img/playbill.png" class="sshow_code_img" id="sshow_code_img" crossorigin="anonymous" >
+        <div class="sshow_code_content">
+            <div class="content_left">
+                <div class="content_left_name">
+                    <img class="content_left_name_img" src="img/icon_logo.png" crossorigin="anonymous" >
+                    <p class="content_left_name_title">张三风</p>
+                </div>
+                <p class="content_left_department">乐清虹桥飞虹南路证券营业部</p>
+                <p class="content_left_num"><span class="content_left_num1">执业编号:</span><span class="content_left_num2">CT2100000000</span></p>
+            </div> 
+            <div class="content_right">
+                <img src="img/qrcord.png" class="content_right_img" crossorigin="anonymous" > 
+                <p class="content_right_remark">长按保存 扫码极速开户</p>        
+            </div>  
+        </div> 
+    </div>
+</div>
+ 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script>
+    $(function () {
+        pageEvent();
+    });
+
+    function pageEvent() {
+        $("#jsModShow").hide();
+        // 点击 生成海报直接进行生成
+         $("#createPlaybill").on("click", function () {
+          $("#jsModShow").show(); 
+          var getPixelRatio = function (context) { // 获取设备的PixelRatio
+                    var backingStore = context.backingStorePixelRatio ||
+                        context.webkitBackingStorePixelRatio ||
+                        context.mozBackingStorePixelRatio ||
+                        context.msBackingStorePixelRatio ||
+                        context.oBackingStorePixelRatio ||
+                        context.backingStorePixelRatio || 0.5;
+                    return (window.devicePixelRatio || 0.5) / backingStore;
+                };
+
+                //生成的图片名称
+                var imgName = "二维码图片.png";
+                //生成的图片范围
+                var shareContent = document.getElementById("sshow_code");
+                var width = shareContent.offsetWidth;
+                var height = shareContent.offsetHeight;
+                var canvas = document.createElement("canvas");
+                var context = canvas.getContext('2d');
+
+                //将canvas的容器扩大PixelRatio倍，再将画布缩放，将图像放大PixelRatio倍。
+                var scale = getPixelRatio(context); 
+                canvas.width = width * scale;
+                canvas.height = height * scale;
+                canvas.style.width = width + 'px';
+                canvas.style.height = height + 'px';
+                context.scale(scale, scale);
+
+    
+                var opts = {
+                   // canvas: canvas,
+                    dpi: window.devicePixelRatio,
+                    allowTaint: true,
+                    useCORS: true,
+                    // backgroundColor: "#000000",//颜色设置成和背景图片一样即可解决白边问题,如果为transparent则有白边
+                    backgroundColor: "transparent",//全透明，解决了弹出框出现白边问题
+                    
+         
+                };
+                html2canvas(shareContent, opts).then((canvas) => {
+                  var dataURL = canvas.toDataURL("image/png");
+                $("#sshow_code").html('');
+                  var baseHtml = `
+                    <img src=${dataURL} style="width: 100%;height:100%;border-radius: .2667rem;" id="sshow_code_img1">
+                  `  
+                  $("#sshow_code").html(baseHtml);
+
+                })
+         });
+
+
+   
+         
+        // 关闭海报
+        $("#sshow_bg").on("click",function(){
+            $("#jsModShow").hide();   
+		}); 
+        
+    }
+
+
+    
+  
+
+
+
+</script>
+</body>
+</html>

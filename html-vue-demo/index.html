@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue 3 简单计数器 Demo</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .counter { margin: 30px auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; width: 300px; text-align: center; }
+    button { font-size: 18px; margin: 10px; }
+    h2 { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <div class="counter">
+    <h2>Vue 3 计数器</h2>
+    <div id="app"></div>
+  </div>
+  <!-- 引入 Vue 3 CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    const { createApp, ref } = Vue;
+    createApp({
+      setup() {
+        const count = ref(0);
+        function increment() {
+          count.value++;
+        }
+        return { count, increment };
+      },
+      template: `
+        <div>
+          <h3>{{ count }}</h3>
+          <button @click="increment">+1</button>
+        </div>
+      `
+    }).mount('#app');
+  </script>
+</body>
+</html>
